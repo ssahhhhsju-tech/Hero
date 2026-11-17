@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniTool Hub - Free All-in-One Online Web Utilities & Developer Tools</title>
-    <meta name="description" content="Free online web utility suite featuring text counter, Base64 encoder/decoder, secure password generator, QR code generator, JSON formatter, and developer tools. Fast, free, and no ads.">
-    <meta name="keywords" content="online text counter, base64 encoder, password generator, qr code generator, json formatter, web utilities, developer tools">
+    <meta name="description" content="Free online web utility suite featuring text counter, Base64 encoder/decoder, secure password generator, QR code generator, JSON formatter, URL encoder/decoder, and developer tools. Fast, free, and no ads.">
+    <meta name="keywords" content="online text counter, base64 encoder, password generator, qr code generator, json formatter, url encoder, web utilities, developer tools">
     <meta name="author" content="OmniTool Hub">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
@@ -52,6 +52,7 @@
             <button class="nav-btn" onclick="switchTool('password', this)">🔑 Password Generator</button>
             <button class="nav-btn" onclick="switchTool('qrcode', this)">📱 QR Code Generator</button>
             <button class="nav-btn" onclick="switchTool('json', this)">💻 JSON Formatter</button>
+            <button class="nav-btn" onclick="switchTool('url', this)">🔗 URL Encoder / Decoder</button>
         </aside>
         <main>
             <!-- Text Counter Panel -->
@@ -97,6 +98,16 @@
                 <div class="btn-group">
                     <button class="action-btn" onclick="formatJSON()">Format / Beautify</button>
                     <button class="action-btn" style="background:#ef4444;" onclick="document.getElementById('json-input').value=''">Clear</button>
+                </div>
+            </div>
+            <!-- URL Encoder / Decoder Panel -->
+            <div id="url" class="tool-panel">
+                <h2>URL Encoder / Decoder</h2>
+                <textarea id="url-input" placeholder="Enter text or URL to encode/decode..."></textarea>
+                <div class="btn-group">
+                    <button class="action-btn" onclick="encodeURL()">Encode URL</button>
+                    <button class="action-btn" onclick="decodeURL()">Decode URL</button>
+                    <button class="action-btn" style="background:#ef4444;" onclick="document.getElementById('url-input').value=''">Clear</button>
                 </div>
             </div>
         </main>
@@ -155,6 +166,18 @@
             } catch (e) {
                 alert('Invalid JSON: ' + e.message);
             }
+        }
+        function encodeURL() {
+            try {
+                const val = document.getElementById('url-input').value;
+                document.getElementById('url-input').value = encodeURIComponent(val);
+            } catch (e) { alert('Encoding error!'); }
+        }
+        function decodeURL() {
+            try {
+                const val = document.getElementById('url-input').value;
+                document.getElementById('url-input').value = decodeURIComponent(val);
+            } catch (e) { alert('Invalid URL encoded string!'); }
         }
     </script>
 </body>
