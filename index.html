@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmniTool Hub - All-in-One Utility Suite</title>
+    <title>OmniTool Hub - Free All-in-One Online Web Utilities & Developer Tools</title>
+    <meta name="description" content="Free online web utility suite featuring text counter, Base64 encoder/decoder, secure password generator, QR code generator, and JSON formatter. Fast, free, and no ads.">
+    <meta name="keywords" content="online text counter, base64 encoder, password generator, qr code generator, json formatter, web utilities">
+    <meta name="author" content="OmniTool Hub">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
         :root {
@@ -15,181 +18,123 @@
             --text-secondary: #94a3b8;
             --border: #334155;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
-        header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg); color: var(--text); font-family: sans-serif; }
+        header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1rem; text-align: center; }
         header h1 { font-size: 1.5rem; color: var(--primary); }
-        .container { display: flex; flex: 1; max-width: 1400px; width: 100%; margin: 0 auto; padding: 2rem; gap: 2rem; }
+        .container { display: flex; max-width: 1200px; margin: 2rem auto; gap: 2rem; padding: 0 1rem; }
         aside { width: 260px; display: flex; flex-direction: column; gap: 0.5rem; }
-        .nav-btn { background: transparent; border: none; color: var(--text-secondary); padding: 0.8rem 1rem; text-align: left; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: 0.2s; }
-        .nav-btn:hover, .nav-btn.active { background: var(--primary); color: white; }
-        main { flex: 1; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .tool-panel { display: none; flex-direction: column; gap: 1.5rem; }
+        .nav-btn { background: transparent; border: none; color: var(--text); padding: 0.75rem 1rem; text-align: left; border-radius: 0.5rem; cursor: pointer; font-size: 1rem; }
+        .nav-btn:hover, .nav-btn.active { background: var(--card-bg); color: var(--primary); font-weight: bold; }
+        main { flex: 1; background: var(--card-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 2rem; }
+        .tool-panel { display: none; flex-direction: column; gap: 1rem; }
         .tool-panel.active { display: flex; }
         h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
-        textarea, input[type="text"], input[type="number"] { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 0.8rem; border-radius: 6px; font-size: 1rem; resize: vertical; }
+        textarea, input[type="text"], input[type="number"] { width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 0.5rem; }
         textarea { min-height: 120px; }
         .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
-        button.action-btn { background: var(--primary); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        button.action-btn { background: var(--primary); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; }
         button.action-btn:hover { background: var(--primary-hover); }
-        .stats { display: flex; gap: 2rem; font-size: 0.95rem; color: var(--text-secondary); }
-        #qrcode-canvas { margin-top: 1rem; background: white; padding: 10px; border-radius: 6px; display: inline-block; }
-        @media(max-width: 768px) { .container { flex-direction: column; padding: 1rem; } aside { width: 100%; flex-direction: row; overflow-x: auto; } }
+        .stats { display: flex; gap: 2rem; font-size: 1.1rem; color: var(--text-secondary); }
+        #qrcode-canvas { margin-top: 1rem; background: white; padding: 1rem; border-radius: 0.5rem; display: inline-block; }
+        @media(max-width: 768px) { .container { flex-direction: column; } aside { width: 100%; } }
     </style>
 </head>
 <body>
-
     <header>
         <h1>⚡ OmniTool Hub</h1>
         <p style="color: var(--text-secondary); font-size: 0.9rem;">Your All-in-One Daily Web Utilities</p>
     </header>
-
     <div class="container">
         <aside>
-            <button class="nav-btn active" onclick="switchTool('text')">📝 Text & Word Counter</button>
-            <button class="nav-btn" onclick="switchTool('base64')">🔐 Base64 Encoder/Decoder</button>
-            <button class="nav-btn" onclick="switchTool('password')">🔑 Password Generator</button>
-            <button class="nav-btn" onclick="switchTool('qr')">📱 QR Code Generator</button>
-            <button class="nav-btn" onclick="switchTool('json')">📋 JSON Formatter</button>
-            <button class="nav-btn" onclick="switchTool('notes')">📌 Quick Sticky Notes</button>
+            <button class="nav-btn active" onclick="switchTool('text', this)">📝 Text & Word Counter</button>
+            <button class="nav-btn" onclick="switchTool('base64', this)">🔐 Base64 Encoder/Decoder</button>
+            <button class="nav-btn" onclick="switchTool('password', this)">🔑 Password Generator</button>
+            <button class="nav-btn" onclick="switchTool('qrcode', this)">📱 QR Code Generator</button>
         </aside>
-
         <main>
-            <!-- 1. Text Tool -->
-            <div id="tool-text" class="tool-panel active">
-                <h2>Text Case & Word Counter</h2>
+            <!-- Text Counter Panel -->
+            <div id="text" class="tool-panel active">
+                <h2>Text & Word Counter</h2>
                 <textarea id="text-input" placeholder="Type or paste your text here..." oninput="updateTextStats()"></textarea>
                 <div class="stats">
-                    <span id="stat-words">Words: 0</span>
-                    <span id="stat-chars">Characters: 0</span>
-                </div>
-                <div class="btn-group">
-                    <button class="action-btn" onclick="transformText('upper')">UPPERCASE</button>
-                    <button class="action-btn" onclick="transformText('lower')">lowercase</button>
-                    <button class="action-btn" onclick="clearText('text-input')">Clear</button>
+                    <span id="word-count">Words: 0</span>
+                    <span id="char-count">Characters: 0</span>
                 </div>
             </div>
-
-            <!-- 2. Base64 Tool -->
-            <div id="tool-base64" class="tool-panel">
+            <!-- Base64 Panel -->
+            <div id="base64" class="tool-panel">
                 <h2>Base64 Encoder / Decoder</h2>
                 <textarea id="base64-input" placeholder="Enter text to encode or decode..."></textarea>
                 <div class="btn-group">
                     <button class="action-btn" onclick="encodeBase64()">Encode</button>
                     <button class="action-btn" onclick="decodeBase64()">Decode</button>
-                    <button class="action-btn" onclick="clearText('base64-input')">Clear</button>
+                    <button class="action-btn" style="background:#ef4444;" onclick="document.getElementById('base64-input').value=''">Clear</button>
                 </div>
             </div>
-
-            <!-- 3. Password Generator -->
-            <div id="tool-password" class="tool-panel">
+            <!-- Password Generator Panel -->
+            <div id="password" class="tool-panel">
                 <h2>Secure Password Generator</h2>
-                <div style="display: flex; gap: 1rem; align-items: center;">
-                    <label>Length: <input type="number" id="pass-len" value="12" min="6" max="32" style="width: 80px; display:inline-block;"></label>
-                </div>
-                <input type="text" id="pass-output" readonly placeholder="Click generate...">
+                <input type="text" id="password-output" readonly placeholder="Generated password will appear here">
                 <div class="btn-group">
                     <button class="action-btn" onclick="generatePassword()">Generate Password</button>
-                    <button class="action-btn" onclick="copyPassword()">Copy to Clipboard</button>
                 </div>
             </div>
-
-            <!-- 4. QR Code Generator -->
-            <div id="tool-qr" class="tool-panel">
+            <!-- QR Code Panel -->
+            <div id="qrcode" class="tool-panel">
                 <h2>QR Code Generator</h2>
-                <input type="text" id="qr-input" placeholder="Enter URL or text to generate QR code..." oninput="generateQR()">
-                <div><canvas id="qrcode-canvas"></canvas></div>
-            </div>
-
-            <!-- 5. JSON Formatter -->
-            <div id="tool-json" class="tool-panel">
-                <h2>JSON Formatter & Validator</h2>
-                <textarea id="json-input" placeholder='{"name": "OmniTool", "status": "active"}'></textarea>
+                <input type="text" id="qr-input" placeholder="Enter text or URL for QR code...">
                 <div class="btn-group">
-                    <button class="action-btn" onclick="formatJSON()">Format / Beautify</button>
-                    <button class="action-btn" onclick="clearText('json-input')">Clear</button>
+                    <button class="action-btn" onclick="generateQR()">Generate QR Code</button>
                 </div>
-            </div>
-
-            <!-- 6. Quick Notes -->
-            <div id="tool-notes" class="tool-panel">
-                <h2>Quick Scratchpad Notes</h2>
-                <textarea id="quick-notes" placeholder="Type notes here... saved automatically in your browser." oninput="saveNotes()"></textarea>
+                <div id="qrcode-container"></div>
             </div>
         </main>
     </div>
-
     <script>
-        function switchTool(toolId) {
+        function switchTool(toolId, btn) {
             document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tool-' + toolId).classList.add('active');
-            event.target.classList.add('active');
-            if(toolId === 'notes') loadNotes();
+            document.getElementById(toolId).classList.add('active');
+            btn.classList.add('active');
         }
-
         function updateTextStats() {
-            const val = document.getElementById('text-input').value;
-            document.getElementById('stat-words').innerText = 'Words: ' + (val.trim() ? val.trim().split(/\s+/).length : 0);
-            document.getElementById('stat-chars').innerText = 'Characters: ' + val.length;
+            const text = document.getElementById('text-input').value;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            const chars = text.length;
+            document.getElementById('word-count').innerText = `Words: ${words}`;
+            document.getElementById('char-count').innerText = `Characters: ${chars}`;
         }
-
-        function transformText(type) {
-            const el = document.getElementById('text-input');
-            el.value = type === 'upper' ? el.value.toUpperCase() : el.value.toLowerCase();
-            updateTextStats();
-        }
-
-        function clearText(id) {
-            document.getElementById(id).value = '';
-            if(id === 'text-input') updateTextStats();
-        }
-
         function encodeBase64() {
-            try { document.getElementById('base64-input').value = btoa(document.getElementById('base64-input').value); } catch(e) { alert('Invalid input'); }
+            try {
+                const val = document.getElementById('base64-input').value;
+                document.getElementById('base64-input').value = btoa(val);
+            } catch (e) { alert('Encoding error!'); }
         }
-
         function decodeBase64() {
-            try { document.getElementById('base64-input').value = atob(document.getElementById('base64-input').value); } catch(e) { alert('Invalid Base64 string'); }
+            try {
+                const val = document.getElementById('base64-input').value;
+                document.getElementById('base64-input').value = atob(val);
+            } catch (e) { alert('Invalid Base64 string!'); }
         }
-
         function generatePassword() {
-            const len = document.getElementById('pass-len').value;
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!";
             let pass = "";
-            for (let i = 0; i < len; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            document.getElementById('pass-output').value = pass;
+            for(let i=0; i<12; i++) {
+                pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('password-output').value = pass;
         }
-
-        function copyPassword() {
-            const el = document.getElementById('pass-output');
-            navigator.clipboard.writeText(el.value);
-            alert('Password copied!');
-        }
-
         function generateQR() {
             const val = document.getElementById('qr-input').value;
-            const canvas = document.getElementById('qrcode-canvas');
-            if(!val) { canvas.style.display = 'none'; return; }
-            canvas.style.display = 'inline-block';
-            QRCode.toCanvas(canvas, val, { width: 160 }, function (error) { if (error) console.error(error); });
-        }
-
-        function formatJSON() {
-            const el = document.getElementById('json-input');
-            try {
-                const obj = JSON.parse(el.value);
-                el.value = JSON.stringify(obj, null, 4);
-            } catch(e) { alert('Invalid JSON format!'); }
-        }
-
-        function saveNotes() {
-            localStorage.setItem('omnitool_notes', document.getElementById('quick-notes').value);
-        }
-
-        function loadNotes() {
-            const saved = localStorage.getItem('omnitool_notes');
-            if(saved) document.getElementById('quick-notes').value = saved;
+            const container = document.getElementById('qrcode-container');
+            container.innerHTML = "";
+            if(!val) return;
+            const canvas = document.createElement('canvas');
+            container.appendChild(canvas);
+            QRCode.toCanvas(canvas, val, { width: 200 }, function (error) {
+                if (error) console.error(error);
+            });
         }
     </script>
 </body>

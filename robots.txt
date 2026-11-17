@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ssahhhhsju-tech.github.io/Hero/sitemap.xml
