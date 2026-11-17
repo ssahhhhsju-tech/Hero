@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniTool Hub - Free All-in-One Online Web Utilities & Developer Tools</title>
-    <meta name="description" content="Free online web utility suite featuring text counter, Base64 encoder/decoder, secure password generator, QR code generator, JSON formatter, URL encoder/decoder, and developer tools. Fast, free, and no ads.">
-    <meta name="keywords" content="online text counter, base64 encoder, password generator, qr code generator, json formatter, url encoder, web utilities, developer tools">
+    <meta name="description" content="Free online web utility suite featuring text counter, Base64 encoder/decoder, secure password generator, QR code generator, JSON formatter, URL encoder/decoder, CSS box shadow generator, and developer tools. Fast, free, and no ads.">
+    <meta name="keywords" content="online text counter, base64 encoder, password generator, qr code generator, json formatter, url encoder, box shadow generator, web utilities, developer tools">
     <meta name="author" content="OmniTool Hub">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
@@ -30,13 +30,16 @@
         .tool-panel { display: none; flex-direction: column; gap: 1rem; }
         .tool-panel.active { display: flex; }
         h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
-        textarea, input[type="text"], input[type="number"] { width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 0.5rem; font-family: monospace; }
+        textarea, input[type="text"], input[type="number"], input[type="range"] { width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 0.5rem; font-family: monospace; }
         textarea { min-height: 140px; }
         .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
         button.action-btn { background: var(--primary); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; }
         button.action-btn:hover { background: var(--primary-hover); }
         .stats { display: flex; gap: 2rem; font-size: 1.1rem; color: var(--text-secondary); }
         #qrcode-container { margin-top: 1rem; background: white; padding: 1rem; border-radius: 0.5rem; display: inline-block; }
+        .shadow-preview-box { width: 100%; height: 160px; background: #0f172a; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; border: 1px solid var(--border); }
+        .preview-element { width: 100px; height: 100px; background: var(--primary); border-radius: 0.5rem; transition: box-shadow 0.1s ease; }
+        .control-row { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.9rem; color: var(--text-secondary); }
         @media(max-width: 768px) { .container { flex-direction: column; } aside { width: 100%; } }
     </style>
 </head>
@@ -53,6 +56,7 @@
             <button class="nav-btn" onclick="switchTool('qrcode', this)">📱 QR Code Generator</button>
             <button class="nav-btn" onclick="switchTool('json', this)">💻 JSON Formatter</button>
             <button class="nav-btn" onclick="switchTool('url', this)">🔗 URL Encoder / Decoder</button>
+            <button class="nav-btn" onclick="switchTool('shadow', this)">🎨 CSS Box Shadow Generator</button>
         </aside>
         <main>
             <!-- Text Counter Panel -->
@@ -71,7 +75,7 @@
                 <div class="btn-group">
                     <button class="action-btn" onclick="encodeBase64()">Encode</button>
                     <button class="action-btn" onclick="decodeBase64()">Decode</button>
-                    <button class="action-btn" style="background:#ef4444;" onclick="document.getElementById('base64-input').value=''">Clear</button>
+                    <button class="action-btn" style="background:#ef4444;" onclick="document.getElementById('base64-input').value='complex'">Clear</button>
                 </div>
             </div>
             <!-- Password Generator Panel -->
@@ -109,6 +113,30 @@
                     <button class="action-btn" onclick="decodeURL()">Decode URL</button>
                     <button class="action-btn" style="background:#ef4444;" onclick="document.getElementById('url-input').value=''">Clear</button>
                 </div>
+            </div>
+            <!-- CSS Box Shadow Generator Panel -->
+            <div id="shadow" class="tool-panel">
+                <h2>CSS Box Shadow Generator</h2>
+                <div class="shadow-preview-box">
+                    <div id="preview-box" class="preview-element"></div>
+                </div>
+                <div class="control-row">
+                    <span>Horizontal Offset: <span id="h-val">10</span>px</span>
+                    <input type="range" id="sh-x" min="-50" max="50" value="10" oninput="updateShadow()">
+                </div>
+                <div class="control-row">
+                    <span>Vertical Offset: <span id="v-val">10</span>px</span>
+                    <input type="range" id="sh-y" min="-50" max="50" value="10" oninput="updateShadow()">
+                </div>
+                <div class="control-row">
+                    <span>Blur Radius: <span id="b-val">20</span>px</span>
+                    <input type="range" id="sh-blur" min="0" max="100" value="20" oninput="updateShadow()">
+                </div>
+                <div class="control-row">
+                    <span>Spread Radius: <span id="s-val">0</span>px</span>
+                    <input type="range" id="sh-spread" min="-50" max="50" value="0" oninput="updateShadow()">
+                </div>
+                <textarea id="shadow-css" readonly style="min-height: 70px; margin-top: 0.5rem;"></textarea>
             </div>
         </main>
     </div>
@@ -179,6 +207,24 @@
                 document.getElementById('url-input').value = decodeURIComponent(val);
             } catch (e) { alert('Invalid URL encoded string!'); }
         }
+        function updateShadow() {
+            const x = document.getElementById('sh-x').value;
+            const y = document.getElementById('sh-y').value;
+            const blur = document.getElementById('sh-blur').value;
+            const spread = document.getElementById('sh-spread').value;
+            
+            document.getElementById('h-val').innerText = x;
+            document.getElementById('v-val').innerText = y;
+            document.getElementById('b-val').innerText = blur;
+            document.getElementById('s-val').innerText = spread;
+
+            const shadowVal = `${x}px ${y}px ${blur}px ${spread}px rgba(0, 0, 0, 0.5)`;
+            document.getElementById('preview-box').style.boxShadow = shadowVal;
+            document.getElementById('shadow-css').value = `box-shadow: ${shadowVal};`;
+        }
+        window.onload = function() {
+            updateShadow();
+        };
     </script>
 </body>
 </html>
