@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OmniTool Hub - Free All-in-One Online Web Utilities & Developer Tools</title>
-    <meta name="description" content="Free online web utility suite featuring text counter, Base64 encoder/decoder, secure password generator, QR code generator, and JSON formatter. Fast, free, and no ads.">
-    <meta name="keywords" content="online text counter, base64 encoder, password generator, qr code generator, json formatter, web utilities">
+    <meta name="description" content="Free online web utility suite featuring text counter, Base64 encoder/decoder, secure password generator, QR code generator, JSON formatter, and developer tools. Fast, free, and no ads.">
+    <meta name="keywords" content="online text counter, base64 encoder, password generator, qr code generator, json formatter, web utilities, developer tools">
     <meta name="author" content="OmniTool Hub">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <style>
@@ -30,20 +30,20 @@
         .tool-panel { display: none; flex-direction: column; gap: 1rem; }
         .tool-panel.active { display: flex; }
         h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
-        textarea, input[type="text"], input[type="number"] { width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 0.5rem; }
-        textarea { min-height: 120px; }
+        textarea, input[type="text"], input[type="number"] { width: 100%; padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); color: var(--text); border-radius: 0.5rem; font-family: monospace; }
+        textarea { min-height: 140px; }
         .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
         button.action-btn { background: var(--primary); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 0.5rem; cursor: pointer; font-weight: bold; }
         button.action-btn:hover { background: var(--primary-hover); }
         .stats { display: flex; gap: 2rem; font-size: 1.1rem; color: var(--text-secondary); }
-        #qrcode-canvas { margin-top: 1rem; background: white; padding: 1rem; border-radius: 0.5rem; display: inline-block; }
+        #qrcode-container { margin-top: 1rem; background: white; padding: 1rem; border-radius: 0.5rem; display: inline-block; }
         @media(max-width: 768px) { .container { flex-direction: column; } aside { width: 100%; } }
     </style>
 </head>
 <body>
     <header>
         <h1>⚡ OmniTool Hub</h1>
-        <p style="color: var(--text-secondary); font-size: 0.9rem;">Your All-in-One Daily Web Utilities</p>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">Your All-in-One Daily Web Utilities & Pro Tools</p>
     </header>
     <div class="container">
         <aside>
@@ -51,6 +51,7 @@
             <button class="nav-btn" onclick="switchTool('base64', this)">🔐 Base64 Encoder/Decoder</button>
             <button class="nav-btn" onclick="switchTool('password', this)">🔑 Password Generator</button>
             <button class="nav-btn" onclick="switchTool('qrcode', this)">📱 QR Code Generator</button>
+            <button class="nav-btn" onclick="switchTool('json', this)">💻 JSON Formatter</button>
         </aside>
         <main>
             <!-- Text Counter Panel -->
@@ -88,6 +89,15 @@
                     <button class="action-btn" onclick="generateQR()">Generate QR Code</button>
                 </div>
                 <div id="qrcode-container"></div>
+            </div>
+            <!-- JSON Formatter Panel -->
+            <div id="json" class="tool-panel">
+                <h2>JSON Formatter & Validator</h2>
+                <textarea id="json-input" placeholder="Paste raw JSON data here..."></textarea>
+                <div class="btn-group">
+                    <button class="action-btn" onclick="formatJSON()">Format / Beautify</button>
+                    <button class="action-btn" style="background:#ef4444;" onclick="document.getElementById('json-input').value=''">Clear</button>
+                </div>
             </div>
         </main>
     </div>
@@ -135,6 +145,16 @@
             QRCode.toCanvas(canvas, val, { width: 200 }, function (error) {
                 if (error) console.error(error);
             });
+        }
+        function formatJSON() {
+            try {
+                const val = document.getElementById('json-input').value;
+                if(!val) return;
+                const parsed = JSON.parse(val);
+                document.getElementById('json-input').value = JSON.stringify(parsed, null, 4);
+            } catch (e) {
+                alert('Invalid JSON: ' + e.message);
+            }
         }
     </script>
 </body>
